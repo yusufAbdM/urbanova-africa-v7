@@ -1,0 +1,10 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+const data=readFileSync(new URL('../src/data/legal.js',import.meta.url),'utf8');
+const ui=readFileSync(new URL('../src/components/LegalIntelligence.jsx',import.meta.url),'utf8');
+const layout=readFileSync(new URL('../src/components/Layout.jsx',import.meta.url),'utf8');
+for (const section of ['energy','traffic','environment','impact','geography']) test(`${section} has African and Nigerian regulatory sources`,()=>{assert.match(data,new RegExp('  '+section+': \{'));});
+test('legal panel connected to global layout',()=>assert.match(layout,/<LegalIntelligence\/>/));
+test('legal panel supports country and state selectors',()=>{assert.match(ui,/setCountry/);assert.match(ui,/setState/);});
+test('legal panel clearly limits legal claims',()=>assert.match(ui,/not legal advice/));

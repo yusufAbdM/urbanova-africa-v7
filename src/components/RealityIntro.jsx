@@ -1,0 +1,3 @@
+export default function RealityIntro({kind,title,problem,solution,source,sourceUrl}) {
+ return <section className={`reality-intro reality-${kind}`} aria-label={`${title} in the real world`}><div className="reality-image" role="img" aria-label={`Illustrative real-world photography relating to ${title.toLowerCase()}`}/><div className="reality-content"><span className="eyebrow">REAL-WORLD CHALLENGE / {kind.toUpperCase()}</span><h2>{title}</h2><p><strong>The challenge.</strong> {problem}</p><p><strong>Urbanova's response.</strong> {solution}</p><a href={sourceUrl} target="_blank" rel="noopener noreferrer">Explore supporting research: {source} ↗</a><small>Photography is illustrative and does not represent a verified location or event.</small></div></section>
+}
