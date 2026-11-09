@@ -157,3 +157,28 @@ button,a,input,select{touch-action:manipulation}
 .research-brief-note{font-size:12px;color:#9cb7bf}
 @media(max-width:800px){.research-brief-grid{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){.site-shell::before,.site-shell::after{animation:none!important} :where(button,a,[role="button"],summary){transition:none!important}}
+
+/* V8: unified interactive states, provider diagnostics and mobile overflow */
+.service-status{padding:46px 0 22px}.service-status-top{display:flex;align-items:center;justify-content:space-between;gap:24px}.service-status h2{font-size:clamp(25px,3vw,38px);margin-bottom:10px}.service-status p{color:#a9c5c6;line-height:1.7;max-width:720px}.service-status-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:24px}.service-status-card{display:flex;flex-direction:column;gap:10px;padding:20px;border-radius:14px;border:1px solid rgba(137,233,195,.2);background:rgba(12,37,46,.9)}.service-status-card strong{font-size:14px}.service-status-card small{color:#a7c2c5}.service-status-card span{font-size:12px;color:#83efc0}
+.site-shell :is(button,a,summary,[role="button"]){transition:transform .18s ease,box-shadow .18s ease,background-color .18s ease,border-color .18s ease,color .18s ease}
+@media(hover:hover){.site-shell :is(button,a,summary,[role="button"]):not(:disabled):hover{filter:brightness(1.13)}.site-shell :is(button,.btn,.nav-cta,[role="button"]):not(:disabled):hover{transform:translateY(-2px);box-shadow:0 7px 22px rgba(28,221,173,.13)}}
+.site-shell :is(button,a,summary,[role="button"]):active{transform:translateY(1px)}
+.site-shell :is(button,a,summary,[role="button"]):focus-visible{outline:3px solid #8bffd2;outline-offset:3px}
+.site-shell button:disabled{cursor:not-allowed;opacity:.6}
+@media(max-width:850px){.service-status-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.service-status-top{align-items:stretch;flex-direction:column}.service-status-grid{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.site-shell :is(button,a,summary,[role="button"]){transition:none!important}}
+
+/* V9 public-release refinements: plain-language provenance and consistent interaction */
+.public-provenance{padding-top:3rem;padding-bottom:3rem}
+.public-provenance-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;margin:1.5rem 0}
+.public-provenance-grid>div{display:flex;flex-direction:column;gap:.7rem;min-width:0;padding:1.4rem;border:1px solid rgba(120,217,195,.28);border-radius:16px;background:rgba(11,39,48,.88)}
+.public-provenance-grid strong{font-size:1.05rem;line-height:1.5;overflow-wrap:anywhere}
+.public-provenance-grid p{margin:0;line-height:1.65;color:#b7d2d2}
+.provenance-label{color:#75e7c7;font-size:.78rem;letter-spacing:.09em;text-transform:uppercase;font-weight:750}
+.public-provenance .fineprint a{color:#83f2d2;text-decoration:underline;text-underline-offset:3px}
+@media(max-width:850px){.public-provenance-grid{grid-template-columns:1fr}}
+:where(button,.btn,.nav-cta,.menu-toggle,.map-modes button,.solution-card a,.text-link,.copy-email):not(:disabled){cursor:pointer;transition:transform .2s ease,background-color .2s ease,border-color .2s ease,box-shadow .2s ease,filter .2s ease}
+@media(hover:hover){:where(button,.btn,.nav-cta,.menu-toggle,.map-modes button,.solution-card a,.text-link,.copy-email):not(:disabled):hover{transform:translateY(-2px);filter:brightness(1.12);box-shadow:0 8px 22px rgba(26,220,178,.14)}}
+:where(button,.btn,.nav-cta,.menu-toggle,.map-modes button,.solution-card a,.text-link,.copy-email):not(:disabled):active{transform:translateY(0);filter:brightness(.95)}
+@media(prefers-reduced-motion:reduce){:where(button,.btn,.nav-cta,.menu-toggle,.map-modes button,.solution-card a,.text-link,.copy-email){transition:none!important}}

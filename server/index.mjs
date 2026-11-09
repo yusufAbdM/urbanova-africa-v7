@@ -18,7 +18,7 @@ const ALLOWED_ORIGIN=process.env.FRONTEND_ORIGIN||'http://localhost:5173';
 const cache=new Map();
 const requestWindows=new Map();
 function rateLimited(req){
- const ip=(req.socket.remoteAddress||'unknown');const now=Date.now();
+ const ip=(req.socket?.remoteAddress||'unknown');const now=Date.now();
  const item=requestWindows.get(ip);const windowStart=item&&now-item.start<60000?item:{start:now,count:0};
  windowStart.count++;requestWindows.set(ip,windowStart);
  if(requestWindows.size>5000){for(const [key,value] of requestWindows){if(now-value.start>60000)requestWindows.delete(key);}}
@@ -32,12 +32,13 @@ const energyCountries={NG:'Nigeria',GH:'Ghana',KE:'Kenya',ZA:'South Africa',EG:'
 function cachedValue(key,ttl){const hit=cache.get(key);return hit&&Date.now()-hit.at<ttl?hit.data:null;}
 function remember(key,data){cache.set(key,{at:Date.now(),data});pruneCache();}
 
-const headers={'Content-Type':'application/json; charset=utf-8','Access-Control-Allow-Origin':ALLOWED_ORIGIN,'Vary':'Origin','Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Referrer-Policy':'no-referrer','X-Frame-Options':'DENY','Permissions-Policy':'geolocation=(), camera=(), microphone=()'};
+const headers={'Content-Type':'application/json; charset=utf-8','Vary':'Origin','Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Referrer-Policy':'no-referrer','X-Frame-Options':'DENY','Permissions-Policy':'geolocation=(), camera=(), microphone=()','Cross-Origin-Resource-Policy':'same-origin','Strict-Transport-Security':'max-age=31536000; includeSubDomains'};
 function send(res,status,body){res.writeHead(status,headers);res.end(JSON.stringify(body));}
 function validCoord(v,min,max){return v!==null&&v!==''&&Number.isFinite(Number(v))&&Number(v)>=min&&Number(v)<=max;}
 export async function handleRequest(req,res){
- if(req.method==='OPTIONS') {res.writeHead(204,{...headers,'Access-Control-Allow-Methods':'GET, OPTIONS','Access-Control-Allow-Headers':'Content-Type'});return res.end();}
+ if(req.method==='OPTIONS') {res.writeHead(204,{...headers,'Allow':'GET, OPTIONS'});return res.end();}
  if(req.method!=='GET')return send(res,405,{error:'Method not allowed'});
+ if((req.url||'').length>2048)return send(res,414,{error:'Request URL too long'});
  if(rateLimited(req))return send(res,429,{error:'Too many requests. Please retry shortly.'});
 
  let url;try{url=new URL(req.url,'http://localhost');}catch{return send(res,400,{error:'Invalid request URL'});}

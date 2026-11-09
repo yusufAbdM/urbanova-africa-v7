@@ -10,7 +10,7 @@ export function ElectricityAccess(){
  return <section className="panel provider-panel" aria-label="Country electricity access statistics"><div className="panel-heading"><div><h3>Country electricity access</h3><p>Latest published historical country estimate — not a live grid reading or household tariff.</p></div></div>
  <div className="field"><label htmlFor="energy-country">Country</label><select id="energy-country" value={country} onChange={e=>setCountry(e.target.value)}>{Object.entries(countryCodes).map(([name,code])=><option key={code} value={code}>{name}</option>)}</select></div>
  {result.status==='loading'&&<p role="status">Loading World Bank statistics…</p>}
- {result.status==='error'&&<p role="alert">Statistics unavailable: {result.message}. Check that the backend is running on port 8787.</p>}
+ {result.status==='error'&&<p role="alert">Statistics are temporarily unavailable: {result.message}. Please try again later.</p>}
  {result.status==='success'&&<div className="result-box"><span>{result.data.country} · {result.data.year}</span><strong>{Number(result.data.percent).toFixed(1)}%</strong><small>Population with access to electricity · World Bank WDI · {result.data.classification}</small></div>}
  <p className="fineprint">This national indicator describes electricity access, not supply reliability, current outages, prices, or individual households. <a href="https://data.worldbank.org/indicator/EG.ELC.ACCS.ZS" target="_blank" rel="noopener noreferrer">Source and methodology</a>.</p></section>;
 }
@@ -24,7 +24,7 @@ export function TrafficFlow(){
  {result.status==='loading'&&<p role="status">Checking provider…</p>}
  {result.status==='error'&&<p role="status" className="fineprint">{result.message} The illustrative dashboard above remains separate from live data.</p>}
  {result.status==='success'&&<div className="result-box"><span>Reported road-segment speed</span><strong>{result.data.currentSpeed} km/h</strong><small>Free-flow speed: {result.data.freeFlowSpeed} km/h · Confidence: {result.data.confidence??'unreported'} · Checked: {new Date(result.data.sampledAt).toLocaleString()}</small></div>}
- <p className="fineprint">Source when configured: TomTom Maps Traffic Flow v4. Requires a private TOMTOM_API_KEY in the backend. Coverage varies; this is not route guidance or verified Orbis support.</p></section>;
+ <p className="fineprint">Source when configured: TomTom Maps Traffic Flow v4. Coverage varies by provider and location. This is not turn-by-turn route guidance.</p></section>;
 }
 
 
@@ -47,6 +47,6 @@ export function SensorStationDiscovery(){
   {result.status==='loading'&&<p role="status">Checking OpenAQ station coverage…</p>}
   {result.status==='error'&&<p role="status" className="fineprint">{result.message} This does not affect the modeled air-quality forecast above.</p>}
   {result.status==='success'&&<div aria-live="polite"><p><strong>{result.data.stations.length}</strong> stations returned for {city.name}. {result.data.stations.length===0?'No stations were reported within the search radius.':''}</p><ul className="station-list">{result.data.stations.slice(0,8).map(station=><li key={station.id}><strong>{station.name||`Station ${station.id}`}</strong><span>{station.sensors.map(s=>s.parameter).filter(Boolean).join(', ')||'Sensor parameters not reported'}</span></li>)}</ul><p className="fineprint">Source: OpenAQ v3 · Station metadata only · Checked {new Date(result.data.checkedAt).toLocaleString()}</p></div>}
-  <p className="fineprint">Requires OPENAQ_API_KEY in the backend. <a href="https://docs.openaq.org/" target="_blank" rel="noopener noreferrer">OpenAQ documentation</a>. Provider coverage varies by location.</p>
+  <p className="fineprint">Monitoring station availability depends on the provider and location. <a href="https://docs.openaq.org/" target="_blank" rel="noopener noreferrer">OpenAQ documentation</a>. Provider coverage varies by location.</p>
  </section>;
 }
